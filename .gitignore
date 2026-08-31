@@ -1,0 +1,9 @@
+# 密钥文件——绝对不能提交到 GitHub
+.env
+
+# 向量数据库
+chroma_db/
+
+# Python
+__pycache__/
+*.pyc
