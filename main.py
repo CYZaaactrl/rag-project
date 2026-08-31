@@ -3,6 +3,7 @@ import sys
 from zhipuai import ZhipuAI
 import chromadb
 from dotenv import load_dotenv
+from knowledge import DOCUMENTS
 
 # Windows 控制台默认 GBK 编码，无法打印 emoji，强制切换为 UTF-8
 if sys.platform == "win32":
@@ -32,18 +33,15 @@ def embed_texts(texts):
     sorted_data = sorted(response.data, key=lambda x: x.index)
     return [item.embedding for item in sorted_data]
 
-# 3. 创建向量数据库
+# 3. 创建向量数据库（余弦相似度，embedding-3 官方推荐）
 db_client = chromadb.PersistentClient(path="./chroma_db")
-collection = db_client.get_or_create_collection(name="my_docs")
+collection = db_client.get_or_create_collection(
+    name="my_docs", metadata={"hnsw:space": "cosine"}
+)
 print("✅ 数据库连接成功")
 
-# 4. 准备文档
-documents = [
-    "我是一名机械电子工程专业的学生，熟悉Python和嵌入式开发。",
-    "我做过基于大模型API的智能问答系统，支持多轮对话和流式输出。",
-    "我用树莓派搭建过多传感器数据采集平台，用Claude Code辅助开发。",
-    "我了解RAG技术原理，包括文档切分、向量检索、提示词拼接等环节。"
-]
+# 4. 准备文档（来自 knowledge.py）
+documents = DOCUMENTS
 
 # 5. 向量化并存入
 print("🔄 正在向量化文档...")
