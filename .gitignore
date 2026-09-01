@@ -7,3 +7,8 @@ chroma_db/
 # Python
 __pycache__/
 *.pyc
+
+# 照片检索脚本（含个人照片路径，已在私有仓库 photo-retrieval 单独维护）
+photo_app.py
+photo_index.py
+photo_search.py
